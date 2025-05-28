@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieHub - Лучшие фильмы и сериалы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    .movie-card {
+            transition: all 0.3s ease;
+        }
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+        }
+        .filter-btn.active {
+            background-color: #3B82F6;
+            color: white;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+</style>
+<body class="bg-gray-900 text-white">
+    <!-- Главная страница -->
+    <div id="home-page">
+        <!-- Навигация -->
+        <nav class="bg-gray-800 py-4 px-6 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-film text-blue-400 text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-blue-400">MovieHub</h1>
+                </div>
+                <div class="relative w-1/3">
+                    <input type="text" id="search-input" placeholder="Поиск фильмов и сериалов..." 
+                           class="w-full py-2 px-4 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-400 hover:text-white">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Основной контент -->
+        <main class="container mx-auto py-8 px-4">
+            <!-- Фильтры -->
+            <div class="flex justify-center mb-8 space-x-4">
+                <button id="all-btn" class="filter-btn active bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-lg transition">
+                    Все
+                </button>
+                <button id="movies-btn" class="filter-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-lg transition">
+                    Фильмы
+                </button>
+                <button id="series-btn" class="filter-btn bg-gray-700 hover:bg-gray-600 text-white py-2 px-6 rounded-lg transition">
+                    Сериалы
+                </button>
+            </div>
+
+            <!-- Результаты поиска -->
+            <div id="search-results" class="hidden mb-8">
+                <h2 class="text-2xl font-bold mb-4">Результаты поиска</h2>
+                <div id="search-results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"></div>
+            </div>
+
+            <!-- Фильмы -->
+            <section id="movies-section">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-film text-blue-400 mr-2"></i> Популярные фильмы
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Фильм 1 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="1">
+                        <img src="https://avatars.dzeninfra.ru/get-zen_doc/5221694/pub_636b73fece77842131c58cda_636b8acbf567fb4623b775aa/scale_1200" alt="Довод" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Довод</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">7.5</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2020 • Фантастика</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Фильм 2 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="2">
+                        <img src="https://avatars.dzeninfra.ru/get-zen_doc/2851998/pub_5f0c23187c88957ac4993604_5f0c46136e1b0e7dee773bb6/scale_1200" alt="Мстители: Война бесконечности" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Мстители: Война бесконечности</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.4</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2018 • Фантастика</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Фильм 3 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="3">
+                        <img src="https://cdn1.ozone.ru/multimedia/1037928211.jpg" alt="Джокер" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Джокер</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.4</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2019 • Триллер</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Фильм 4 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="4">
+                        <img src="https://sxodim.com/uploads/almaty/2016/04/447301.jpg" alt="Начало" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Начало</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.7</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2010 • Фантастика</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Фильм 5 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="5">
+                        <img src="https://avatars.mds.yandex.net/i?id=19bbd57950e5db3af2a9039f712f43fa_l-8375627-images-thumbs&n=13" alt="Человек-паук: Нет пути домой" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Человек-паук: Нет пути домой</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.3</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2021 • Фантастика</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильм 6 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="6">
+                        <img src="https://static.okko.tv/images/v4/b98bac7e-8d1a-48d7-9698-470936b210b2" alt="Побег из Шоушенка" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Побег из Шоушенка</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">9.3</span>
+                            </div>
+                            <span class="text-sm text-gray-400">1994 • Драма</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильм 7 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="7">
+                        <img src="https://static.kinoafisha.info/upload/news/209850110253.jpg" alt="Форрест Гамп" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Форрест Гамп</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.8</span>
+                            </div>
+                            <span class="text-sm text-gray-400">1994 • Драма, комедия</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильм 8 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="8">
+                        <img src="https://vkplay.ru/hotbox/content_files/Stories/2024/04/25/6be09cb688274584810e025d49b62662.jpg" alt="Матрица" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Матрица</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.7</span>
+                            </div>
+                            <span class="text-sm text-gray-400">1999 • Научная фантастика, экшн</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильм 9 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="9">
+                        <img src="https://i.ytimg.com/vi/ciqMoNtsA-w/maxresdefault.jpg" alt="Крестный отец" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Крестный отец</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">9.2</span>
+                            </div>
+                            <span class="text-sm text-gray-400">1972 • Криминал, драма</span>
+                        </div>
+                    </div>
+
+                    <!-- Фильм 10 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="movie" data-id="10">
+                        <img src="https://avatars.mds.yandex.net/get-mpic/4585707/img_id395716965869070563.jpeg/9hq" alt="Список Шиндлера" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Список Шиндлера</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.10</span>
+                            </div>
+                            <span class="text-sm text-gray-400">1993 • Драма, история</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="series-section" class="mt-12">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-tv text-blue-400 mr-2"></i> Популярные сериалы
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Сериал 1 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="11">
+                        <img src="https://i.ebayimg.com/images/g/2HcAAOSwCbZiGrfe/s-l1600.jpg" alt="Сверхъестественное" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Сверхъестественное</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.2</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2005-2020 • Ужасы</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Сериал 2 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="12">
+                        <img src="https://i.ytimg.com/vi/LUIpdhfp53o/maxresdefault.jpg" alt="Игра престолов" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Игра престолов</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.9</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2011-2019 • Фэнтези</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Сериал 3 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="13">
+                        <img src="https://i.ytimg.com/vi/O1gFxMoBAVw/maxresdefault.jpg" alt="Во все тяжкие" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Во все тяжкие</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">9.5</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2008-2013 • Драма</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Сериал 4 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="14">
+                        <img src="https://m.media-amazon.com/images/S/pv-target-images/3f8ae4a13de932bc679af5272ce983693d773818ff67a774dfcf0592bcd3beb7.jpg" alt="Рик и Морти" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Рик и Морти</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">9.2</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2013-н.в. • Комедия</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Сериал 5 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="15">
+                        <img src="https://avatars.mds.yandex.net/get-mpic/4367383/2a00000191b0c5f1c28587f73d8f7e8d6cc1/orig" alt="Очень странные дела" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Очень странные дела</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.7</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2016-н.в. • Ужасы</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Сериал 6 -->
+                    <div class="movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg" data-type="series" data-id="16">
+                        <img src="https://avatars.mds.yandex.net/i?id=a91d4d0f31461617e73ab3c54e744d9a_l-9601198-images-thumbs&n=13" alt="Мандалорец" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Мандалорец</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">8.7</span>
+                            </div>
+                            <span class="text-sm text-gray-400">2019-н.в. • Фантастика</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="bg-gray-800 py-8 mt-12">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h2 class="text-2xl font-bold text-blue-400 flex items-center">
+                            <i class="fas fa-film mr-2"></i> MovieHub
+                        </h2>
+                        <p class="text-gray-400 mt-2">Лучшие фильмы в одном месте</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                    <p>© 2023 MovieHub. Все права защищены.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Страница с плеером (изначально скрыта) -->
+    <div id="player-page" class="hidden">
+        <nav class="bg-gray-800 py-4 px-6 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-film text-blue-400 text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-blue-400">MovieHub</h1>
+                </div>
+                <div>
+                    <button id="back-btn" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition">
+                        <i class="fas fa-arrow-left mr-2"></i>Назад
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto py-8 px-4">
+            <div class="video-container mb-8 rounded-lg overflow-hidden shadow-lg">
+                <iframe id="video-player" src="https://yandex.ru/video/preview/14853892455068504693" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-2/3">
+                    <h1 id="movie-title" class="text-3xl font-bold mb-4">Довод</h1>
+                    <div class="flex items-center mb-4 space-x-4">
+                        <div class="flex items-center text-yellow-400">
+                            <i class="fas fa-star text-xl"></i>
+                            <span class="ml-1 text-white text-xl">7.5</span>
+                        </div>
+                        <span class="text-gray-400">2020</span>
+                        <span class="text-gray-400">2h 30m</span>
+                        <span class="bg-blue-500 text-white px-2 py-1 rounded text-sm">HD</span>
+                    </div>
+                    <p id="movie-description" class="text-gray-300 mb-6">
+                        После теракта в киевском оперном театре агент ЦРУ получает доступ к сверхсекретной информации. 
+                        Ему предстоит участвовать в международной шпионской миссии, которая выходит за рамки реального времени.
+                        Фильм рассказывает о путешествии по миру шпионажа, где главный герой пытается предотвратить начало Третьей мировой войны.
+                    </p>
+                </div>
+                <div class="lg:w-1/3">
+                    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-bold mb-4">Информация</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-gray-400">Режиссер:</span>
+                                <span id="movie-director" class="ml-2">Кристофер Нолан</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Жанр:</span>
+                                <span id="movie-genre" class="ml-2">Фантастика, Боевик</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Страна:</span>
+                                <span id="movie-country" class="ml-2">США, Великобритания</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Премьера:</span>
+                                <span id="movie-release" class="ml-2">26 августа 2020</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-400">Бюджет:</span>
+                                <span id="movie-budget" class="ml-2">$205,000,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Данные для поиска
+        const moviesData = [
+            {
+                id: 1,
+                title: "Довод",
+                rating: 7.5,
+                year: 2020,
+                genre: "Фантастика",
+                image: "https://avatars.dzeninfra.ru/get-zen_doc/5221694/pub_636b73fece77842131c58cda_636b8acbf567fb4623b775aa/scale_1200",
+                type: "movie"
+            },
+            {
+                id: 2,
+                title: "Мстители: Война бесконечности",
+                rating: 8.4,
+                year: 2018,
+                genre: "Фантастика",
+                image: "https://avatars.dzeninfra.ru/get-zen_doc/2851998/pub_5f0c23187c88957ac4993604_5f0c46136e1b0e7dee773bb6/scale_1200",
+                type: "movie"
+            },
+            {
+                id: 3,
+                title: "Джокер",
+                rating: 8.4,
+                year: 2019,
+                genre: "Триллер",
+                image: "https://cdn1.ozone.ru/multimedia/1037928211.jpg",
+                type: "movie"
+            },
+            {
+                id: 4,
+                title: "Начало",
+                rating: 8.7,
+                year: 2010,
+                genre: "Фантастика",
+                image: "https://sxodim.com/uploads/almaty/2016/04/447301.jpg",
+                type: "movie"
+            },
+            {
+                id: 5,
+                title: "Человек-паук: Нет пути домой",
+                rating: 8.3,
+                year: 2021,
+                genre: "Фантастика",
+                image: "https://avatars.mds.yandex.net/i?id=19bbd57950e5db3af2a9039f712f43fa_l-8375627-images-thumbs&n=13",
+                type: "movie"
+            },
+            {
+                id: 6,
+                title: "Побег из Шоушенка",
+                rating: 9.3,
+                year: "1994",
+                genre: "Драма",
+                image: "https://yandex.ru/images/search?pos=3&from=tabbar&img_url=https%3A%2F%2Fcs13.pikabu.ru%2Fpost_img%2F2024%2F03%2F24%2F1%2Fog_og_1711233590354279767.jpg&text=%D0%BF%D0%BE%D0%B1%D0%B5%D0%B3+%D0%B8%D0%B7+%D1%88%D0%BE%D1%83%D1%88%D0%B5%D0%BD%D0%BA%D0%B0&rpt=simage&lr=11036",
+                type: "movie"
+            },
+            {
+                id: 7,
+                title: "Форрест Гамп",
+                rating: 8.8,
+                year: "1994",
+                genre: "Драма, комедия",
+                image: "https://static.kinoafisha.info/upload/news/209850110253.jpg",
+                type: "movie"
+            },
+            {
+                id: 8,
+                title: "Матрица",
+                rating: 8.7,
+                year: "1999",
+                genre: "Научная фантастика, экшн",
+                image: "https://vkplay.ru/hotbox/content_files/Stories/2024/04/25/6be09cb688274584810e025d49b62662.jpg",
+                type: "movie"
+            },
+            {
+                id: 9,
+                title: "Крестный отец",
+                rating: 9.2,
+                year: "1972",
+                genre: "Криминал, драма",
+                image: "https://i.ytimg.com/vi/ciqMoNtsA-w/maxresdefault.jpg",
+                type: "movie"
+            },
+            {
+                id: 10,
+                title: "Список Шиндлера",
+                rating: 8.9,
+                year: "1993",
+                genre: "Драма, история",
+                image: "https://avatars.mds.yandex.net/get-mpic/4585707/img_id395716965869070563.jpeg/9hq",
+                type: "movie"
+            },
+            {
+                id: 11,
+                title: "Сверхъестественное",
+                rating: 8.2,
+                year: "2005-2020",
+                genre: "Ужасы, драма, триллер, фэнтези, детектив",
+                image: "https://i.ebayimg.com/images/g/2HcAAOSwCbZiGrfe/s-l1600.jpg",
+                type: "series"
+            },
+            {
+                id: 12,
+                title: "Игра престолов",
+                rating: 8.9,
+                year: "2011-2019",
+                genre: "Фэнтези",
+                image: "https://i.ytimg.com/vi/LUIpdhfp53o/maxresdefault.jpg",
+                type: "series"
+            },
+            {
+                id: 13,
+                title: "Во все тяжкие",
+                rating: 9.5,
+                year: "2008-2013",
+                genre: "Драма",
+                image: "https://i.ytimg.com/vi/O1gFxMoBAVw/maxresdefault.jpg",
+                type: "series"
+            },
+            {
+                id: 14,
+                title: "Рик и Морти",
+                rating: 9.2,
+                year: "2013-н.в.",
+                genre: "Мультфильм",
+                image: "https://m.media-amazon.com/images/S/pv-target-images/3f8ae4a13de932bc679af5272ce983693d773818ff67a774dfcf0592bcd3beb7.jpg",
+                type: "series"
+            },
+            {
+                id: 15,
+                title: "Очень странные дела",
+                rating: 8.7,
+                year: "2016-н.в.",
+                genre: "Ужасы",
+                image: "https://avatars.mds.yandex.net/get-mpic/4367383/2a00000191b0c5f1c28587f73d8f7e8d6cc1/orig",
+                type: "series"
+            },
+            {
+                id: 16,
+                title: "Мандалорец",
+                rating: 8.7,
+                year: "2019-н.в.",
+                genre: "Фантастика",
+                image: "https://avatars.mds.yandex.net/i?id=a91d4d0f31461617e73ab3c54e744d9a_l-9601198-images-thumbs&n=13",
+                type: "series"
+            }
+        ];
+
+        // Данные для страницы плеера
+        const playerData = {
+            1: {
+                title: "Довод",
+                rating: 7.5,
+                year: 2020,
+                duration: "2h 30m",
+                description: "После теракта в киевском оперном театре агент ЦРУ получает доступ к сверхсекретной информации. Ему предстоит участвовать в международной шпионской миссии, которая выходит за рамки реального времени. Фильм рассказывает о путешествии по миру шпионажа, где главный герой пытается предотвратить начало Третьей мировой войны.",
+                director: "Кристофер Нолан",
+                genre: "Фантастика, Боевик",
+                country: "США, Великобритания",
+                release: "26 августа 2020",
+                budget: "$205,000,000",
+                videoUrl: "https://vk.com/video_ext.php?oid=-225574567&id=456239678&hash=d10ebce4f5d8ac99"
+            },
+            2: {
+                title: "Мстители: Война бесконечности",
+                rating: 8.4,
+                year: 2018,
+                duration: "2h 29m",
+                description: "Пока Мстители и их союзники продолжают защищать мир от различных опасностей, с которыми не смог бы справиться один супергерой, новая угроза возникает из космоса: Танос. Межгалактический тиран преследует цель собрать все шесть Камней Бесконечности - артефакты невероятной силы, с помощью которых можно менять реальность по своему желанию.",
+                director: "Энтони и Джо Руссо",
+                genre: "Фантастика, Боевик",
+                country: "США",
+                release: "23 апреля 2018",
+                budget: "$325,000,000",
+                videoUrl: "https://rutube.ru/play/embed/13ab8d24ce9e9c8119b4d67af9daf482"
+            },    
+            3: {
+                title: "Джокер",
+                rating: 8.4,
+                year: 2019,
+                duration: "2h 01m",
+                description: "в начале 1980-х годов комик Артур Флек живёт с больной матерью, которая с детства учит его «ходить с улыбкой». Пытаясь нести в мир хорошее и дарить людям радость, Артур сталкивается с человеческой жестокостью и постепенно приходит к выводу, что этот мир получит от него не добрую улыбку, а ухмылку злодея Джокера.",
+                director: "Тодда Филлипса",
+                genre: "триллер",
+                country: "США",
+                release: "3 октября 2019 года",
+                videoUrl: "https://rutube.ru/play/embed/2be60f14bad8b96c3ac2288e3613064c"
+            },
+            4: {
+                title: "Начало",
+                rating: 8.7,
+                year: 2010,
+                duration: "2h 28m",
+                description: "профессиональный вор Кобб крадёт ценные секреты из глубин подсознания во время сна, когда человеческий разум наиболее уязвим. Редкие способности Кобба сделали его ценным игроком в привычном к предательству мире промышленного шпионажа, но они же превратили его в извечного беглеца и лишили всего, что он когда-либо любил. И вот у Кобба появляется шанс исправить ошибки. Его последнее дело может вернуть всё назад, но для этого ему нужно совершить невозможное — не украсть идею, а внедрить её. ",
+                director: "Кристофер Нолан",
+                genre: "боевик, детектив, драма, триллер, фантастика",
+                country: "США, Великобритания",
+                release: "21 июля 2010 года.",
+                budget: "$160,000,000",
+                videoUrl: "https://rutube.ru/play/embed/27c335dcbef386ff6adfd3fb392465c0"
+            },
+            5: {
+                title: "Человек-паук: Нет пути домой",
+                rating: 8.3,
+                year: 2021,
+                duration: "2h 30m",
+                description: "После того как тайная личность Питера Паркера становится известна всему миру, он обращается за помощью к Доктору Стрэнджу. Маг предлагает применить заклинание, которое должно заставить всех забыть о том, что Паркер — Человек-паук.",
+                director: "Джон Уоттс",
+                genre: "боевик, приключения и фантастика",
+                country: "США",
+                release: "15 декабря 2021 года",
+                budget: "$200,000,000",
+                videoUrl: "https://rutube.ru/play/embed/6615b6d1b58acbbae98be49bc7a0d1c9"
+            },
+            6: {
+                title: "Побег из Шоушенка",
+                rating: 9.3,
+                year: 1994,
+                duration: "142 минуты",
+                description: "История о дружбе между двумя заключенными, Энди Дюфрейном и Рэдом. Энди, осуждённый за убийство жены и её любовника, находит утешение в дружбе с Рэдом, который помогает ему адаптироваться к жизни в тюрьме. Фильм затрагивает темы надежды, свободы и человеческого духа, показывая, как даже в самых трудных условиях можно сохранить веру в лучшее.",
+                director: "Фрэнк Дарабонт",
+                genre: "Драма",
+                country: "США",
+                release: "14 октября 1994",
+                budget: "$25 млн",
+                videoUrl: "https://vk.com/video_ext.php?oid=-192634001&id=456239305&hash=554f15cf5a66c768"
+            },
+            7: {
+                title: "Форрест Гамп",
+                rating: 8.8,
+                year: 1994,
+                duration: "142 минуты",
+                description: "История о простом человеке с низким IQ, который становится свидетелем и участником ключевых событий американской истории. Форрест, несмотря на свои ограничения, достигает успеха в жизни, становится героем войны, играет в футбол и даже встречается с президентами. Фильм исследует темы любви, дружбы и судьбы.",
+                director: "Роберт Земекис",
+                genre: "Драма, комедия",
+                country: "США",
+                release: "6 июля 1994",
+                budget: "$55 млн",
+                videoUrl: "https://rutube.ru/play/embed/9afee890461ce8e3f51facd201d0a4c1"
+            },
+            8: {
+                title: "Матрица",
+                rating: 8.7,
+                year: 1999,
+                duration: "136 минуты",
+                description: "Нео, программист, узнает, что мир, в котором он живет, — это симуляция, созданная машинами для контроля человечества. Он присоединяется к группе повстанцев, чтобы освободить людей и узнать правду о Матрице. Фильм сочетает в себе элементы научной фантастики и боевика, исследуя философские вопросы о реальности и свободе воли.",
+                director: "Лана и Лилли Вачовски",
+                genre: "Научная фантастика, экшн",
+                country: "США, Австралия",
+                release: "31 марта 1999",
+                budget: "$63 млн",
+                videoUrl: "https://rutube.ru/play/embed/ac34389176a19863205a68a9cf9cce70"
+            },
+            9: {
+                title: "Крестный отец",
+                rating: 9.2,
+                year: 1972,
+                duration: "175 минуты",
+                description: "Эпическая история о семье Корлеоне, итало-американской мафиозной династии. В центре сюжета — Вито Корлеоне, который пытается сохранить свою семью и бизнес в мире преступности. Фильм исследует темы власти, предательства и семейных уз, став классикой мирового кино.",
+                director: "Фрэнсис Форд Коппола",
+                genre: "Криминал, драма",
+                country: "США",
+                release: "24 марта 1972",
+                budget: "$6-12 млн",
+                videoUrl: "https://vk.com/video_ext.php?oid=-230190015&id=456239027&hash=4eaa318175c403d9"
+            },
+            10: {
+                title: "Список Шиндлера",
+                rating: 8.9,
+                year: 1993,
+                duration: "195 минуты",
+                description: "Основанный на реальных событиях, фильм рассказывает историю Оскара Шиндлера, немецкого бизнесмена, который спас более тысячи евреев во время Холокоста, нанимая их на свою фабрику. Фильм затрагивает темы человечности, жертвы и морального выбора.",
+                director: "Стивен Спилберг",
+                genre: "Драма, история",
+                country: "США",
+                release: "15 декабря 1993",
+                budget: "$22 млн",
+                videoUrl: "https://vk.com/video_ext.php?oid=-155788388&id=456244879&hash=f8a456341e53ffc6"
+            },
+            11: {
+                title: "Сверхъестественное",
+                rating: 8.2,
+                year: "2005-2020",
+                duration: "43 минуты",
+                description: "Сериал рассказывает о приключениях братьев Сэма и Дина Винчестеров, которые путешествуют по Соединённым Штатам на чёрном автомобиле Chevrolet Impala 1967 года, расследуют паранормальные явления, многие из которых основаны на американских городских легендах и фольклоре, и сражаются с порождениями зла, такими как демоны и призраки.",
+                director: "Миша Коллинз, Ричард Спейт, Аманда Таппинг, Дженсен Эклс, Мэтт Коэн, Эрик Крипке, Питер Эллис, Ким Мэннерс",
+                genre: "Ужасы, драма, триллер, фэнтези, детектив",
+                country: "США",
+                release: "13 сентября 2005",
+                budget: "$2 млн за серию",
+                videoUrl: "blob:https://api.domem.ws/a0c5f033-1051-4538-a8d1-b292ca4873ba"
+            },
+            12: {
+                title: "Игра престолов",
+                rating: 8.9,
+                year: "2011-2019",
+                duration: "8 сезонов",
+                description: "К концу долгого лета в Вестеросе начинается борьба за Железный Трон, развязанная после смерти короля. Между тем древний враг возвращается после тысячелетий заточения за Стеной, а последние представители некогда великой династии вынашивают планы возвращения утраченного.",
+                director: "Дэвид Бениофф, Д.Б. Уайсс",
+                genre: "Фэнтези, Драма",
+                country: "США",
+                release: "17 апреля 2011",
+                budget: "$6 млн за серию",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            },
+            13: {
+                title: "Во все тяжкие",
+                rating: 9.5,
+                year: "2008-2013",
+                duration: "5 сезонов",
+                description: "Уолтер Уайт - скромный школьный учитель химии, которому ставят страшный диагноз - рак легких. Чтобы обеспечить семью, он решает заняться производством метамфетамина. Вместе со своим бывшим учеником Джесси Пинкманом он погружается в криминальный мир, где сталкивается с опасностями и моральными дилеммами.",
+                director: "Винс Гиллиган",
+                genre: "Драма, Криминал",
+                country: "США",
+                release: "20 января 2008",
+                budget: "$3 млн за серию",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            },
+            14: {
+                title: "Рик и Морти",
+                rating: 9.2,
+                year: "2013-н.в.",
+                duration: "8 сезонов",
+                description: "циничный учёный Рик Санчес и его робкий внук Морти вместе путешествуют по Вселенной и параллельным мирам. Регулярно ввязываясь в различные неприятности, они исследуют далёкие планеты, уничтожают целые цивилизации, меняют ход времени и спасают родных от смертельной скуки. ",
+                director: "Джастин Ройланд и Дэн Хармон",
+                genre: "Комедия",
+                country: "США",
+                release: "2 декабря 2013",
+                budget: "$1,5 млн за серию",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            },
+            15: {
+                title: "Очень странные дела",
+                rating: 8.7,
+                year: "2016-н.в.",
+                duration: "5 сезонов",
+                description: "Действие разворачивается в 1980-х годах в вымышленном городке Хоукинс (штат Индиана). Жители города — дети, подростки и взрослые — сталкиваются с влиянием чуждого и опасного параллельного измерения — «Изнанки». В центре сюжета — группа подростков, которые противостоят секретной государственной организации и сверхъестественным существам, появившимся в результате её деятельности.",
+                director: "братьями Даффер",
+                genre: "Ужасы",
+                country: "США",
+                release: "15 июля 2016",
+                budget: "$270 млн",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            },
+            16: {
+                title: "Мандалорец",
+                rating: 8.7,
+                year: "2019-н.в.",
+                duration: "4 сезонов",
+                description: "Действие разворачивается пять лет спустя после событий фильма «Возвращение джедая». В нём рассказывается об одиноком охотнике за головами Дине Джарине, который защищает чувствительного к Силе ребёнка Грогу от остатков имперских войск.",
+                director: "Джон Фавро",
+                genre: "Фантастика",
+                country: "США",
+                release: "2 ноября 2019",
+                budget: "$100 млн",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            }
+        };
+
+        // Поиск
+        document.getElementById('search-btn').addEventListener('click', performSearch);
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            if (!query) return;
+
+            const results = moviesData.filter(item => 
+                item.title.toLowerCase().includes(query)
+            );
+
+            const resultsContainer = document.getElementById('search-results-container');
+            resultsContainer.innerHTML = '';
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<p class="text-gray-400">Ничего не найдено</p>';
+            } else {
+                results.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'movie-card bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer';
+                    card.dataset.type = item.type;
+                    card.dataset.id = item.id;
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">${item.title}</h3>
+                            <div class="flex items-center text-yellow-400 mb-2">
+                                <i class="fas fa-star"></i>
+                                <span class="ml-1 text-white">${item.rating}</span>
+                            </div>
+                            <span class="text-sm text-gray-400">${item.year} • ${item.genre}</span>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => showPlayerPage(item.id, item.type));
+                    resultsContainer.appendChild(card);
+                });
+            }
+
+            document.getElementById('search-results').classList.remove('hidden');
+            document.getElementById('movies-section').classList.add('hidden');
+            document.getElementById('series-section').classList.add('hidden');
+        }
+
+        // Фильтрация
+        document.getElementById('all-btn').addEventListener('click', () => {
+            setActiveFilter('all');
+            document.getElementById('movies-section').classList.remove('hidden');
+            document.getElementById('series-section').classList.remove('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+        });
+
+        document.getElementById('movies-btn').addEventListener('click', () => {
+            setActiveFilter('movies');
+            document.getElementById('movies-section').classList.remove('hidden');
+            document.getElementById('series-section').classList.add('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+        });
+
+        document.getElementById('series-btn').addEventListener('click', () => {
+            setActiveFilter('series');
+            document.getElementById('movies-section').classList.add('hidden');
+            document.getElementById('series-section').classList.remove('hidden');
+            document.getElementById('search-results').classList.add('hidden');
+        });
+
+        function setActiveFilter(filter) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`${filter}-btn`).classList.add('active');
+        }
+
+        // Переход на страницу плеера
+        document.querySelectorAll('.movie-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.dataset.id;
+                const type = card.dataset.type;
+                showPlayerPage(id, type);
+            });
+        });
+
+        function showPlayerPage(id, type) {
+            const data = playerData[id] || {
+                title: "Фильм",
+                rating: 0,
+                year: "2023",
+                duration: "2h",
+                description: "Описание фильма или сериала.",
+                director: "Режиссер",
+                genre: "Жанр",
+                country: "Страна",
+                release: "Дата выхода",
+                budget: "Бюджет",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+            };
+
+            document.getElementById('movie-title').textContent = data.title;
+            document.querySelector('#player-page .text-yellow-400 span').textContent = data.rating;
+            document.getElementById('movie-description').textContent = data.description;
+            document.getElementById('movie-director').textContent = data.director;
+            document.getElementById('movie-genre').textContent = data.genre;
+            document.getElementById('movie-country').textContent = data.country;
+            document.getElementById('movie-release').textContent = data.release;
+            document.getElementById('movie-budget').textContent = data.budget;
+            document.getElementById('video-player').src = data.videoUrl;
+
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('player-page').classList.remove('hidden');
+        }
+
+        // Кнопка "Назад" на странице плеера
+        document.getElementById('back-btn').addEventListener('click', () => {
+            document.getElementById('player-page').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
+            document.getElementById('video-player').src = "";
+        });
+    </script>
+</body>
+</html>
